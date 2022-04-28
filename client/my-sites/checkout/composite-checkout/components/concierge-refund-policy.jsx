@@ -40,11 +40,7 @@ class ConciergeRefundPolicy extends Component {
 			return null;
 		}
 
-		return (
-			<CheckoutTermsItem className="checkout__concierge-refund-policy">
-				{ this.renderPolicy() }
-			</CheckoutTermsItem>
-		);
+		return <CheckoutTermsItem>{ this.renderPolicy() }</CheckoutTermsItem>;
 	}
 }
 
