@@ -10,6 +10,7 @@ import FormLabel from 'calypso/components/forms/form-label';
 import FormSettingExplanation from 'calypso/components/forms/form-setting-explanation';
 import FormInput from 'calypso/components/forms/form-text-input';
 import getTextWidth from 'calypso/landing/gutenboarding/onboarding-block/acquire-intent/get-text-width';
+import { useIntent } from 'calypso/landing/stepper/hooks/use-intent';
 import { ONBOARD_STORE } from 'calypso/landing/stepper/stores';
 import { recordTracksEvent } from 'calypso/lib/analytics/tracks';
 import { tip } from 'calypso/signup/icons';
@@ -77,6 +78,7 @@ const PodcastTitleStep: Step = function PodcastTitleStep( { navigation } ) {
 			hideBack
 			isFullLayout
 			stepContent={ <PodcastTitleForm /> }
+			intent={ useIntent() }
 			recordTracksEvent={ recordTracksEvent }
 		/>
 	);

@@ -233,6 +233,7 @@ const StoreAddress: Step = function StoreAddress( { navigation } ) {
 						/>
 					}
 					stepContent={ getContent() }
+					intent={ intent }
 					recordTracksEvent={ recordTracksEvent }
 				/>
 			</div>
