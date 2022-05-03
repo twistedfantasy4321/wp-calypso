@@ -46,3 +46,34 @@
 		vertical-align: text-bottom;
 	}
 }
+.qr-code-login__placeholder {
+	min-width: 352px;
+	min-height: 352px;
+	position: relative;
+	background-color: var( --color-neutral-0 );
+	margin-bottom: 8px;
+
+	@include placeholder( --color-neutral-0 );
+
+	:nth-child( 2 ) {
+		left: auto;
+		right: 0;
+	}
+	:nth-child( 3 ) {
+		top: auto;
+		bottom: 0;
+	}
+}
+.qr-code-login__help-text.is-placeholder {
+	@include placeholder( --color-neutral-0 );
+}
+.qr-code-login__corner-box {
+	position: absolute;
+	border: 5px solid var( --color-neutral-0 );
+  	outline: 5px solid #fff;
+	background-color: var( --color-neutral-0 );
+	width: 16px;
+	height: 16px;
+	top: 0;
+	left: 0;
+}
