@@ -19,6 +19,7 @@ export class PlanPrice extends Component {
 			displayPerMonthNotation,
 			displayShortPerMonthNotation,
 			originalPricePrefix,
+			productDisplayPrice,
 			isOnSale,
 			taxText,
 			translate,
@@ -26,6 +27,11 @@ export class PlanPrice extends Component {
 
 		if ( ! currencyCode || ! ( typeof rawPrice === 'number' ) ) {
 			return null;
+		}
+		// Dangerously set innerHTML display price
+		// eslint-disable-next-line no-unused-vars
+		function setDisplayPrice() {
+			return { __html: productDisplayPrice };
 		}
 
 		// "Normalize" the input price or price range.
