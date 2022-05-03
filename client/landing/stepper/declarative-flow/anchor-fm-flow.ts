@@ -13,7 +13,7 @@ export const anchorFmFlow: Flow = {
 	name: 'anchor-fm',
 
 	useSteps() {
-		return [ 'podcastTitle', 'designSetup', 'processing' ] as StepPath[];
+		return [ 'podcastTitle', 'designSetup', 'processing', 'error' ] as StepPath[];
 	},
 
 	useStepNavigation( currentStep, navigate ) {
