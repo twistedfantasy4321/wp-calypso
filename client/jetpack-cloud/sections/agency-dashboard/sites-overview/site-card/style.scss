@@ -1,0 +1,29 @@
+.site-card {
+	&__vertical-align-middle {
+		vertical-align: middle;
+	}
+	&__position-relative {
+		position: relative;
+	}
+	&__card.is-compact {
+		padding: 10px;
+	}
+	&__expanded-content {
+		padding: 0.5em 0.3em;
+	}
+	&__expanded-content-list {
+		margin: 1em 0;
+		position: relative;
+	}
+	&__expanded-content-key {
+		font-size: 12px;
+		display: flex;
+	}
+	&__expanded-content-value {
+		position: absolute;
+    	left: 30%;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+	}
+}
