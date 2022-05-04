@@ -1,9 +1,12 @@
 import { Card, Gridicon } from '@automattic/components';
+import { useTranslate } from 'i18n-calypso';
 import { useState } from 'react';
 import './style.scss';
-import TableActions from '../site-actions';
+import SiteActions from '../site-actions';
 
 const SiteCard = ( { rows, columns } ) => {
+	const translate = useTranslate();
+
 	const [ isExpanded, setIsExpanded ] = useState( false );
 
 	const toggleIsExpanded = () => {
@@ -22,6 +25,8 @@ const SiteCard = ( { rows, columns } ) => {
 	const expandedContentItems = rowKeys.filter( ( row, index ) => index > 0 );
 
 	const site = rows.site;
+	const siteError = site.error;
+	const siteUrl = site.value.url;
 
 	return (
 		<Card className="site-card__card" compact>
@@ -35,11 +40,24 @@ const SiteCard = ( { rows, columns } ) => {
 					{ toggleContent }
 					{ rows[ headerItem ].formatter( rows ) }
 				</span>
-				<TableActions site={ site } />
+				<SiteActions site={ site } />
 			</div>
 
 			{ isExpanded && (
 				<div className="site-card__expanded-content">
+					{ siteError && (
+						<div className="site-card__error-container">
+							<span className="site-card__error-message">
+								{ translate( 'Jetpack could not connect to your site.' ) }
+							</span>
+							<a
+								className="site-card__error-message-link"
+								href={ `https://wordpress.com/settings/disconnect-site/${ siteUrl }?type=down` }
+							>
+								{ translate( 'fix now' ) }
+							</a>
+						</div>
+					) }
 					{ expandedContentItems.map( ( key, index ) => {
 						if ( rows[ key ].formatter ) {
 							return (

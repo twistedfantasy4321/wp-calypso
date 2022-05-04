@@ -2,117 +2,6 @@
 @import '@wordpress/base-styles/_breakpoints.scss';
 @import '@wordpress/base-styles/_mixins.scss';
 
-
-.sites-overview {
-	height: 100vh;
-	&__heading {
-		margin: 1em;
-		@include break-mobile() {
-			margin: 0
-		}
-	}
-}
-
-.site-table{
-	&__status {
-		display: inline-flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		padding: 6px;
-		width: fit-content;
-		height: 22px;
-		background: #FFFFFF;
-		box-sizing: border-box;
-		border-radius: 12px;
-		font-weight: 700;
-		color: #FFFFFF;
-		font-size: 8px;
-		vertical-align: middle;
-		@include break-medium() {
-			font-size: 8px;
-			padding: 12px;
-		}
-		@include break-large() {
-			padding: 5px;
-		}
-		@include break-xlarge() {
-			font-size: 9px;
-		}
-		@include break-wide() {
-			padding: 6px;
-			font-size: 10px;
-		}
-	}
-	&__status-error {
-		border: 1px solid #D63638;
-		color: #D63638;
-	}
-	&__status-critical {
-		border: 1px solid #D63638;
-		background: #D63638;
-		border-radius: 50%;
-		height: 20px;
-		width: 20px;
-		padding: 0px;
-		margin: auto;
-		@include break-zoomed-in {
-			position: absolute;
-			right: 40px;
-			   span {
-				display: none;
-			   }
-		}
-		@include break-xlarge() {
-			border-radius: 12px;
-			padding: 6px 8px;
-			width: fit-content;
-			height: 22px;
-			span {
-				display: inline;
-			   }
-		}
-		@include break-large() {
-			position: static;
-		}
-
-	}
-	&__status-warning {
-		border: 1px solid #F0C930;
-		color: #F0C930;
-	}
-	&__status-add-new {
-		color: #787C82;
-		border: 1px solid #F6F7F7;
-		span {
-			margin: 0.5em;
-		}
-	}
-	&__row-text {
-		display: inline-block;
-		font-size: 13px;
-		white-space: nowrap;
-		width: 50px;
-		overflow: hidden;
-		text-overflow: clip;
-		vertical-align: middle;
-		@include break-zoomed-in {
-			width: calc(100% - 100px);
-			margin-left: 5px;
-			margin-right: 5px;
-		}
-		@include break-large() {
-			width: calc(100% - 20px);
-			margin-left: 0;
-		}
-		@include break-xlarge() {
-			width: calc(100% - 150px);
-			margin-right: 0;
-		}
-	}
-}
-
-
 .site-table {
 	&__table {
 		display: none;
@@ -160,33 +49,12 @@
 			vertical-align: middle;
 		}
 	}
-	&__mobile-view {
-		margin: 1em 0;
-		@include break-large() {
-			display: none;
-		}
-	}
-	&__icon {
-		margin: 0.3em;
-		@include break-medium() {
-			margin-right: 0.5em;
-		}
-	}
-	&__grey-icon {
-		vertical-align: middle;
-		margin-left: 0.5em;
-		color: #787C82
-	}
-
 	&__inline-flex {
 		display: inline-flex;
 		width: 100%;
 	}
-	&__disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
 }
+
 
 td.site-table__actions {
 	padding: 0;

@@ -26,4 +26,17 @@
 		transform: translateY(-50%);
 		display: flex;
 	}
+	&__error-container {
+		background: #F6F7F7;
+		padding: 8px;
+	}
+	&__error-message {
+		font-size: 12px;
+	}
+	&__error-message-link {
+		margin: 0 0.3em;
+		font-size: 12px;
+		text-decoration: underline;
+		color: #101517;
+	}
 }
