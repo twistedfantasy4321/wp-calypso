@@ -1,5 +1,6 @@
 import { Gridicon } from '@automattic/components';
 import { translate } from 'i18n-calypso';
+import Badge from 'calypso/components/badge';
 
 const getLinks = ( type, status, siteUrl, siteId ) => {
 	let link = '';
@@ -44,13 +45,17 @@ const statusFormatter = ( { value, status }, link, siteError ) => {
 	switch ( status ) {
 		case 'failed': {
 			content = (
-				<span className="sites-overview__status sites-overview__status-error">{ value }</span>
+				<Badge className="sites-overview__font-size-12px" type="error">
+					{ value }
+				</Badge>
 			);
 			break;
 		}
 		case 'warning': {
 			content = (
-				<span className="sites-overview__status sites-overview__status-warning">{ value }</span>
+				<Badge className="sites-overview__font-size-12px" type="warning">
+					{ value }
+				</Badge>
 			);
 			break;
 		}
@@ -59,38 +64,28 @@ const statusFormatter = ( { value, status }, link, siteError ) => {
 			break;
 		}
 		case 'active': {
-			content = <Gridicon icon="minus-small" size={ 18 } className="sites-overview__grey-icon" />;
+			content = <Gridicon icon="minus-small" size={ 18 } className="sites-overview__icon-active" />;
 			break;
 		}
 		case 'progress': {
 			content = (
 				<svg
-					width="20"
-					height="8"
-					viewBox="0 0 20 8"
+					className="sites-overview__vertical-align-middle"
+					width="16"
+					height="16"
+					viewBox="0 0 16 16"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 				>
+					<circle cx="8" cy="8" r="7.25" stroke="black" strokeWidth="1.5" />
+					<rect x="7" y="4" width="1.5" height="5" fill="#1E1E1E" />
 					<rect
-						x="0.75"
-						y="0.75"
-						width="18.5"
-						height="6.5"
-						rx="3.25"
-						stroke="#A7AAAD"
-						strokeWidth="1.5"
-					/>
-					<mask id="path-2-inside-1_2789_78" fill="white">
-						<path d="M0 4C0 1.79086 1.79086 0 4 0H16.5L8.5 8H4C1.79086 8 0 6.20914 0 4Z" />
-					</mask>
-					<path
-						d="M0 4C0 1.79086 1.79086 0 4 0H16.5L8.5 8H4C1.79086 8 0 6.20914 0 4Z"
-						fill="#A7AAAD"
-					/>
-					<path
-						d="M16.5 0L17.5607 1.06066L20.1213 -1.5H16.5V0ZM8.5 8V9.5H9.12132L9.56066 9.06066L8.5 8ZM4 1.5H16.5V-1.5H4V1.5ZM15.4393 -1.06066L7.43934 6.93934L9.56066 9.06066L17.5607 1.06066L15.4393 -1.06066ZM8.5 6.5H4V9.5H8.5V6.5ZM4 6.5C2.61929 6.5 1.5 5.38071 1.5 4H-1.5C-1.5 7.03757 0.962434 9.5 4 9.5V6.5ZM4 -1.5C0.962434 -1.5 -1.5 0.962434 -1.5 4H1.5C1.5 2.61929 2.61929 1.5 4 1.5V-1.5Z"
-						fill="#A7AAAD"
-						mask="url(#path-2-inside-1_2789_78)"
+						x="10.8901"
+						y="10.77"
+						width="1.5"
+						height="4"
+						transform="rotate(135 10.8901 10.77)"
+						fill="#1E1E1E"
 					/>
 				</svg>
 			);
@@ -99,8 +94,8 @@ const statusFormatter = ( { value, status }, link, siteError ) => {
 		case 'inactive': {
 			content = (
 				<span className="sites-overview__status sites-overview__status-add-new">
-					<Gridicon icon="plus-small" size={ 18 } />
-					<span>{ translate( 'ADD' ) }</span>
+					<Gridicon icon="plus-small" size={ 16 } />
+					<span>{ translate( 'Add' ) }</span>
 				</span>
 			);
 			break;
@@ -142,9 +137,8 @@ const siteFormatter = ( rows ) => {
 			<span className="sites-overview__row-text">{ value }</span>
 			{ error && (
 				<a href={ `https://wordpress.com/settings/disconnect-site/${ value }?type=down` }>
-					<span className="sites-overview__status sites-overview__status-critical">
-						<Gridicon size={ 18 } className="sites-overview__icon" icon="notice-outline" />
-						<span>{ error }</span>
+					<span className="sites-overview__status-critical">
+						<Gridicon size={ 24 } icon="notice-outline" />
 					</span>
 				</a>
 			) }
@@ -218,11 +212,37 @@ export const getFormattedSites = ( sites ) => {
 					formatter: monitorFormatter,
 				},
 				plugins: {
-					value: `${ pluginUpdates.length } ${ translate( 'AVAILABLE' ) }`,
+					value: `${ pluginUpdates.length } ${ translate( 'Available' ) }`,
 					status: pluginUpdates.length > 0 ? 'warning' : 'active',
 					formatter: pluginsFormatter,
 				},
 			};
 		} )
+	);
+};
+
+export const errorContent = ( siteUrl ) => {
+	return (
+		<div className="sites-overview__error-container">
+			<span className="sites-overview__error-icon">
+				<Gridicon size={ 18 } icon="notice-outline" />
+			</span>
+			<span className="sites-overview__error-message sites-overview__error-message-large-screen">
+				{ translate( 'Jetpack is unable to connect to %(siteUrl)s', {
+					args: {
+						siteUrl,
+					},
+				} ) }
+			</span>
+			<span className="sites-overview__error-message sites-overview__error-message-small-screen">
+				{ translate( 'Jetpack is unable to connect' ) }
+			</span>
+			<a
+				className="sites-overview__error-message-link"
+				href={ `https://wordpress.com/settings/disconnect-site/${ siteUrl }?type=down` }
+			>
+				{ translate( 'Fix now' ) }
+			</a>
+		</div>
 	);
 };

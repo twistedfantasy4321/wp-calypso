@@ -1,12 +1,10 @@
 import { Card, Gridicon } from '@automattic/components';
-import { useTranslate } from 'i18n-calypso';
 import { useState } from 'react';
 import './style.scss';
 import SiteActions from '../site-actions';
+import { errorContent } from '../utils';
 
 const SiteCard = ( { rows, columns } ) => {
-	const translate = useTranslate();
-
 	const [ isExpanded, setIsExpanded ] = useState( false );
 
 	const toggleIsExpanded = () => {
@@ -32,6 +30,7 @@ const SiteCard = ( { rows, columns } ) => {
 		<Card className="site-card__card" compact>
 			<div className="site-card__position-relative">
 				<span
+					className="site-card__title"
 					onClick={ toggleIsExpanded }
 					onKeyPress={ toggleIsExpanded }
 					role="button"
@@ -45,19 +44,7 @@ const SiteCard = ( { rows, columns } ) => {
 
 			{ isExpanded && (
 				<div className="site-card__expanded-content">
-					{ siteError && (
-						<div className="site-card__error-container">
-							<span className="site-card__error-message">
-								{ translate( 'Jetpack could not connect to your site.' ) }
-							</span>
-							<a
-								className="site-card__error-message-link"
-								href={ `https://wordpress.com/settings/disconnect-site/${ siteUrl }?type=down` }
-							>
-								{ translate( 'fix now' ) }
-							</a>
-						</div>
-					) }
+					{ siteError && errorContent( siteUrl ) }
 					{ expandedContentItems.map( ( key, index ) => {
 						if ( rows[ key ].formatter ) {
 							return (

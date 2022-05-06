@@ -4,8 +4,6 @@
 
 .site-content {
 	&__mobile-view {
-		margin: 1em 0;
-		padding: 0 1em;
 		@include break-large() {
 			display: none;
 		}
