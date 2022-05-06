@@ -100,11 +100,9 @@ function TokenQRCode( { tokenData } ) {
 	const { token, encrypted } = tokenData;
 	const imageSettings = {
 		src: qrCenter,
-		x: null,
-		y: null,
 		height: 64,
 		width: 64,
-		excavate: true,
+		excavate: false,
 	};
 	return (
 		<QRCode
@@ -167,19 +165,34 @@ function QRCodeLogin( { translate, locale } ) {
 		<Main className={ classNames( 'qr-code-login' ) }>
 			<GlobalNotices id="notices" />
 			<div className="qr-code-login__form">
-				<h1 className="qr-code-login__heading">
-					{ translate( 'Use QR code to login via the Mobile App' ) }
-				</h1>
+				<h1 className="qr-code-login__heading">{ translate( 'Login via the Mobile App' ) }</h1>
 
 				<Card className="qr-code-login__card">
-					<TokenQRCode tokenData={ tokenData } />
-					<p
-						className={ classNames( 'qr-code-login__help-text', {
-							'is-placeholder': ! tokenData,
-						} ) }
-					>
-						{ translate( "Scan with your phone's camera to login to WordPress.com" ) }
-					</p>
+					<div className="qr-code-login__container">
+						<TokenQRCode tokenData={ tokenData } />
+					</div>
+
+					<div className="qr-code-login__instructions">
+						<h2 className="qr-code-login__heading">{ translate( 'Use QR Code to login' ) }</h2>
+						<ol>
+							<li>
+								Open the{ ' ' }
+								<a href="https://apps.wordpress.com/get/?campaign=calypso-qrcode-apps">
+									WordPress App
+								</a>{ ' ' }
+								on your phone.
+							</li>
+							<li>Tap the My Site Tab.</li>
+							<li>Tap your Profile image in the top right corner of the screen.</li>
+							<li>
+								Tap the <strong>Scan QR Code</strong> option.
+							</li>
+							<li>Point your phone to this screen to scan the code.</li>
+						</ol>
+						<p>
+							<a href="https://apps.wordpress.com/mobile/login-via-qr-code">Need help?</a>
+						</p>
+					</div>
 				</Card>
 				<div className="qr-code-login__footer">
 					<a href={ login( loginParameters ) }>
