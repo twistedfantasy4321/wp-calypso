@@ -12,6 +12,86 @@ import { login } from 'calypso/lib/paths';
 import './style.scss';
 
 const AUTH_PULL_INTERVAL = 5000; // 5 seconds
+const LOCALE_STORAGE_KEY = 'qr-login-token';
+
+const isStillValidToken = ( tokenData ) => {
+	if ( ! tokenData ) {
+		return false;
+	}
+	const { expires } = tokenData;
+	if ( ! expires ) {
+		return false;
+	}
+	return expires > Date.now() / 1000;
+};
+
+const setLocalTokenData = ( data ) => {
+	try {
+		window.localStorage.setItem( LOCALE_STORAGE_KEY, JSON.stringify( data ) );
+	} catch ( e ) {}
+};
+
+const getLocalTokenData = () => {
+	try {
+		const valueString = window.localStorage.getItem( LOCALE_STORAGE_KEY );
+		if ( valueString === undefined || valueString === null ) {
+			return false;
+		}
+
+		const tokenData = JSON.parse( valueString );
+		if ( isStillValidToken( tokenData ) ) {
+			return tokenData;
+		}
+	} catch ( e ) {}
+
+	return false;
+};
+
+const getLoginActionResponse = async ( action, args ) => {
+	const url = new URL( 'https://wordpress.com/wp-login.php' );
+	url.searchParams.append( 'action', action );
+
+	Object.keys( args ).forEach( ( key ) => {
+		url.searchParams.append( key, args[ key ] );
+	} );
+
+	const response = await fetch( url.href );
+	return await response.json();
+};
+
+const fetchQRCodeData = async ( setTokenData, tokenData, anonymousUserId ) => {
+	if ( isStillValidToken( tokenData ) ) {
+		return tokenData;
+	}
+
+	const responseData = await getLoginActionResponse( 'qr-code-token-request-endpoint', {
+		anon_id: anonymousUserId,
+	} );
+
+	setTokenData( responseData.data );
+	setLocalTokenData( responseData.data );
+};
+
+const fetchAuthState = async ( setAuthState, setTokenData, tokenData, anonymousUserId ) => {
+	if ( ! tokenData ) {
+		return;
+	}
+
+	if ( ! isStillValidToken( tokenData ) ) {
+		fetchQRCodeData( setTokenData, tokenData, anonymousUserId );
+		return;
+	}
+
+	const { token, encrypted } = tokenData;
+
+	const responseData = await getLoginActionResponse( 'qr-code-authentication-endpoint', {
+		anon_id: anonymousUserId,
+		token: token,
+		data: encrypted,
+	} );
+
+	setAuthState( responseData.data );
+};
 
 function TokenQRCode( { tokenData } ) {
 	if ( ! tokenData ) {
@@ -45,68 +125,12 @@ function QRCodePlaceholder() {
 	);
 }
 
-const isStillValidToken = ( tokenData ) => {
-	if ( ! tokenData ) {
-		return false;
-	}
-	const { expires } = tokenData;
-	if ( ! expires ) {
-		return false;
-	}
-	return expires > Date.now() / 1000;
-};
-
-const getLoginActionResponse = async ( action, args ) => {
-	const url = new URL( 'https://wordpress.com/wp-login.php' );
-	url.searchParams.append( 'action', action );
-
-	Object.keys( args ).forEach( ( key ) => {
-		url.searchParams.append( key, args[ key ] );
-	} );
-
-	const response = await fetch( url.href );
-	return await response.json();
-};
-
-const fetchQRCodeData = async ( setTokenData, tokenData, anonymousUserId ) => {
-	if ( isStillValidToken( tokenData ) ) {
-		return tokenData;
-	}
-
-	const responseData = await getLoginActionResponse( 'qr-code-token-request-endpoint', {
-		anon_id: anonymousUserId,
-	} );
-
-	setTokenData( responseData.data );
-};
-
-const fetchAuthState = async ( setAuthState, setTokenData, tokenData, anonymousUserId ) => {
-	if ( ! tokenData ) {
-		return;
-	}
-
-	if ( ! isStillValidToken( tokenData ) ) {
-		fetchQRCodeData( setTokenData, tokenData, anonymousUserId );
-		return;
-	}
-
-	const { token, encrypted } = tokenData;
-
-	const responseData = await getLoginActionResponse( 'qr-code-authentication-endpoint', {
-		anon_id: anonymousUserId,
-		token: token,
-		data: encrypted,
-	} );
-
-	setAuthState( responseData.data );
-};
-
 function QRCodeLogin( { translate, locale } ) {
 	const loginParameters = {
 		locale: locale,
 	};
 
-	const [ tokenData, setTokenData ] = useState( false );
+	const [ tokenData, setTokenData ] = useState( getLocalTokenData() );
 	const [ authState, setAuthState ] = useState( false );
 	const currentTimer = useRef( null );
 
