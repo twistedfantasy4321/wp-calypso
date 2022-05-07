@@ -110,6 +110,8 @@ describe(
 
 			if ( response.success !== true ) {
 				console.log( `Failed to delete user ID ${ userID }` );
+			} else {
+				console.log( `Successfully deleted user ID ${ userID }` );
 			}
 			return response;
 		} );

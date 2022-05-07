@@ -181,7 +181,7 @@ export class RestAPIClient {
 		const params: RequestParams = {
 			method: 'get',
 			headers: {
-				Authorization: this.getAuthorizationHeader( 'bearer' ),
+				Authorization: await this.getAuthorizationHeader( 'bearer' ),
 				'Content-Type': this.getContentTypeHeader( 'json' ),
 			},
 		};
@@ -232,7 +232,7 @@ export class RestAPIClient {
 		const params: RequestParams = {
 			method: 'post',
 			headers: {
-				Authorization: this.getAuthorizationHeader( 'bearer' ),
+				Authorization: await this.getAuthorizationHeader( 'bearer' ),
 				'Content-Type': this.getContentTypeHeader( 'json' ),
 			},
 		};
@@ -247,7 +247,7 @@ export class RestAPIClient {
 		const params: RequestParams = {
 			method: 'get',
 			headers: {
-				Authorization: this.getAuthorizationHeader( 'bearer' ),
+				Authorization: await this.getAuthorizationHeader( 'bearer' ),
 				'Content-Type': this.getContentTypeHeader( 'json' ),
 			},
 		};
